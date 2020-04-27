@@ -2,6 +2,7 @@
   "name": "cast/ecdsa",
   "description" : "ECDSA pure PHP implementation",
   "type": "library",
+  "license": "MIT",
   "require": {
     "php": "^7.3",
     "ext-gmp": "*",
