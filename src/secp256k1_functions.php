@@ -131,3 +131,29 @@ function decompressPublicKeyVerbose($publicKeyCompressedHex)
         'uncompressed' => PREFIX_UNCOMPRESSED.$x_hex.$computed_y_hex,
     ];
 }
+
+function sign($RandNumBase_16, $HashOfThingToSign, $privKeyHex)
+{
+    [$xRandSignPoint, $yRandSignPoint] = EccMultiply($RandNumBase_16, GPoint(), N(), A_CURVE, p_curve());
+    $r = $xRandSignPoint % N();
+    $s = ((gmp_init($HashOfThingToSign, 16) + $r*gmp_init($privKeyHex, 16))*(gmp_invert(gmp_init($RandNumBase_16, 16),N()))) % N();
+    return convBase(gmp_strval($s), BASE_10, BASE_16);
+}
+
+function verify($signature, $messageHash, $RandNumBase_16, $publicKeyCompressedHex)
+{
+    [$xRandSignPoint, $yRandSignPoint] = EccMultiply($RandNumBase_16, GPoint(), N(), A_CURVE, p_curve());
+    $s = gmp_init($signature, 16);
+    $r = $xRandSignPoint % N();
+
+    ['X' => $xPublicKey, 'Y' => $yPublicKey] = decompressPublicKeyVerbose($publicKeyCompressedHex);
+
+    $w = gmp_invert($s,N());
+    [$xu1, $yu1] = EccMultiply(convBase(gmp_strval((gmp_init($messageHash, 16) * $w)%N()), BASE_10, BASE_16), GPoint(), N(), A_CURVE, p_curve());
+    [$xu2, $yu2] = EccMultiply(convBase(gmp_strval(($r*$w)%N()), BASE_10, BASE_16), [$xPublicKey,$yPublicKey], N(), A_CURVE, p_curve());
+    [$x,$y] = ECadd([$xu1,$yu1],[$xu2,$yu2], p_curve());
+    $rSrtVal = gmp_strval($r);
+    $xStrVal = gmp_strval($x);
+
+    return hash_equals($rSrtVal, $xStrVal);
+}
