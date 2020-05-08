@@ -111,7 +111,7 @@ function decompressPublicKey($publicKeyCompressedHex)
         $y = gmp_init($y_square_square_root);
     }
 
-    $computed_y_hex = convBase(gmp_strval($y), BASE_10, BASE_16);
+    $computed_y_hex = convBase(gmp_strval($y), BASE_10, BASE_16_UPPER);
 
-    return PREFIX_UNCOMPRESSED . strtolower($x_hex) . $computed_y_hex;
+    return PREFIX_UNCOMPRESSED . $x_hex . $computed_y_hex;
 }
