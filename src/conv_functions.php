@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace Cast\Crypto\ECDSA\Conv;
 
+const BASE_2  = '01';
+const BASE_10 = '0123456789';
+const BASE_16 = '0123456789abcdef';
+const BASE_16_UPPER = '0123456789ABCDEF';
+const BASE_58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+
 function convBase($numberInput, $fromBaseInput, $toBaseInput) : string
 {
     if ($fromBaseInput==$toBaseInput) return $numberInput;
