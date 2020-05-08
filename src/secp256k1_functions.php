@@ -92,3 +92,26 @@ function publicKeyVerbose($privateKey)
     ];
 }
 
+/**
+ * @param $publicKeyCompressedHex
+ * @return string
+ */
+function decompressPublicKey($publicKeyCompressedHex)
+{
+    $prefix = substr($publicKeyCompressedHex, 0, 2);
+    $x_hex = substr($publicKeyCompressedHex, 2, strlen($publicKeyCompressedHex));
+    $x = gmp_init($x_hex, 16);
+
+    $y_square = gmp_mod(gmp_mod(gmp_pow($x, 3), p_curve()) + 7, p_curve());
+    $y_square_square_root = bcpowmod(gmp_strval($y_square), gmp_strval((p_curve() + 1) / 4), gmp_strval(p_curve()));
+
+    if (($prefix == PREFIX_COMPRESSED_EVEN and $y_square_square_root & 1) or ($prefix == PREFIX_COMPRESSED_ODD and !($y_square_square_root & 1))) {
+        $y = (-gmp_init($y_square_square_root)) % p_curve();
+    }else {
+        $y = gmp_init($y_square_square_root);
+    }
+
+    $computed_y_hex = convBase(gmp_strval($y), BASE_10, BASE_16);
+
+    return PREFIX_UNCOMPRESSED . strtolower($x_hex) . $computed_y_hex;
+}
