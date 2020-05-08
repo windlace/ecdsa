@@ -98,6 +98,15 @@ function publicKeyVerbose($privateKey)
  */
 function decompressPublicKey($publicKeyCompressedHex)
 {
+    return decompressPublicKeyVerbose($publicKeyCompressedHex)['uncompressed'];
+}
+
+/**
+ * @param $publicKeyCompressedHex
+ * @return array
+ */
+function decompressPublicKeyVerbose($publicKeyCompressedHex)
+{
     $prefix = substr($publicKeyCompressedHex, 0, 2);
     $x_hex = substr($publicKeyCompressedHex, 2, strlen($publicKeyCompressedHex));
     $x = gmp_init($x_hex, 16);
@@ -111,7 +120,14 @@ function decompressPublicKey($publicKeyCompressedHex)
         $y = gmp_init($y_square_square_root);
     }
 
-    $computed_y_hex = convBase(gmp_strval($y), BASE_10, BASE_16_UPPER);
+    $computed_y_hex = \Cast\Crypto\ECDSA\Conv\convBase(gmp_strval($y), \Cast\Crypto\ECDSA\Conv\BASE_10, BASE_16_UPPER);
 
-    return PREFIX_UNCOMPRESSED . $x_hex . $computed_y_hex;
+    return [
+        'X' => $x,
+        'Y' => $y,
+        'xHex' => $x_hex,
+        'yHex' => $computed_y_hex,
+        'compressed' => prefixCompressed($y).$x_hex,
+        'uncompressed' => PREFIX_UNCOMPRESSED.$x_hex.$computed_y_hex,
+    ];
 }
