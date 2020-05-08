@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Cast\Crypto\ECDSA\secp256k1;
 
 use const Cast\Crypto\ECDSA\Conv\BASE_10;
+use const Cast\Crypto\ECDSA\Conv\BASE_16;
 use const Cast\Crypto\ECDSA\Conv\BASE_16_UPPER;
 use function Cast\Crypto\ECDSA\Conv\convBase;
 use function Cast\Crypto\ECDSA\ECC\EccMultiply;
@@ -132,11 +133,11 @@ function decompressPublicKeyVerbose($publicKeyCompressedHex)
     ];
 }
 
-function sign($RandNumBase_16, $HashOfThingToSign, $privKeyHex)
+function sign($RandNumBase_16, $messageHash, $privKeyHex)
 {
     [$xRandSignPoint, $yRandSignPoint] = EccMultiply($RandNumBase_16, GPoint(), N(), A_CURVE, p_curve());
     $r = $xRandSignPoint % N();
-    $s = ((gmp_init($HashOfThingToSign, 16) + $r*gmp_init($privKeyHex, 16))*(gmp_invert(gmp_init($RandNumBase_16, 16),N()))) % N();
+    $s = ((gmp_init($messageHash, 16) + $r*gmp_init($privKeyHex, 16))*(gmp_invert(gmp_init($RandNumBase_16, 16),N()))) % N();
     return convBase(gmp_strval($s), BASE_10, BASE_16);
 }
 
