@@ -9,6 +9,7 @@ use function Cast\Crypto\ECDSA\secp256k1\prefixCompressed;
 use function Cast\Crypto\ECDSA\secp256k1\publicKey;
 use function Cast\Crypto\ECDSA\secp256k1\publicKeyVerbose;
 use function Cast\Crypto\ECDSA\secp256k1\publicKeyCoords;
+use function Cast\Crypto\ECDSA\secp256k1\decompressPublicKey;
 use function Cast\Crypto\ECDSA\secp256k1\hex;
 use PHPUnit\Framework\TestCase;
 
@@ -85,5 +86,10 @@ class Secp256k1Test extends TestCase
                 publicKeyVerbose('18e14a7b6a307f426a94f8114701e7c8e774e7f9a47e2c2035db29a206321725')
             )
         );
+    }
+
+    public function test_decompressPublicKey()
+    {
+        $this->assertEquals('0450863AD64A87AE8A2FE83C1AF1A8403CB53F53E486D8511DAD8A04887E5B23522CD470243453A299FA9E77237716103ABC11A1DF38855ED6F2EE187E9C582BA6', decompressPublicKey('0250863AD64A87AE8A2FE83C1AF1A8403CB53F53E486D8511DAD8A04887E5B2352'));
     }
 }
