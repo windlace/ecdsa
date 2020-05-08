@@ -9,6 +9,7 @@ use const Cast\Crypto\ECDSA\Conv\BASE_16;
 use const Cast\Crypto\ECDSA\Conv\BASE_16_UPPER;
 use function Cast\Crypto\ECDSA\Conv\convBase;
 use function Cast\Crypto\ECDSA\ECC\EccMultiply;
+use function Cast\Crypto\ECDSA\ECC\ECadd;
 
 const P_CURVE = "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F";   // 2^256 - 2^32 - 2^9 - 2^8 - 2^7 - 2^6 - 2^4 - 1
 # These two defines the elliptic curve. y^2 = x^3 + Acurve * x + Bcurve
