@@ -120,7 +120,7 @@ function decompressPublicKeyVerbose($publicKeyCompressedHex)
         $y = gmp_init($y_square_square_root);
     }
 
-    $computed_y_hex = \Cast\Crypto\ECDSA\Conv\convBase(gmp_strval($y), \Cast\Crypto\ECDSA\Conv\BASE_10, BASE_16_UPPER);
+    $computed_y_hex = convBase(gmp_strval($y), BASE_10, BASE_16_UPPER);
 
     return [
         'X' => $x,
