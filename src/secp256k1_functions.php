@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Cast\Crypto\ECDSA\secp256k1;
 
-use const Cast\BaseConv\BASE_10;
-use const Cast\BaseConv\BASE_16_UPPER;
+use const Cast\Crypto\ECDSA\Conv\BASE_10;
+use const Cast\Crypto\ECDSA\Conv\BASE_16_UPPER;
 use function Cast\Crypto\ECDSA\Conv\convBase;
 use function Cast\Crypto\ECDSA\ECC\EccMultiply;
 
