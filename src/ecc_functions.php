@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Cast\Crypto\ECDSA\ECC;
 
-use const Cast\BaseConv\BASE_16_UPPER;
-use const Cast\BaseConv\BASE_2;
+use const Cast\Crypto\ECDSA\Conv\BASE_2;
+use const Cast\Crypto\ECDSA\Conv\BASE_16_UPPER;
 use function Cast\Crypto\ECDSA\Conv\convBase;
 
 /**
